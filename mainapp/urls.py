@@ -1,6 +1,4 @@
 from django.urls import path
 from . import views
 
-urlpatterns = [
-    path("", views.GetUserDoc.as_view())
-]
+urlpatterns = [path("analysis", views.GetUserDoc.as_view())]

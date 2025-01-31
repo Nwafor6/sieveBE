@@ -1,0 +1,177 @@
+{%extends 'base.html'%}
+{%load static%}
+
+{%block content%}
+    
+    <div id="about" class="about-section">
+        <div class="container text-center">
+            <h2 class="section-title">Particle Size Analysis</h2>
+            <p class="intro">Start by downloading the particle size analysis template <a href="{%static 'assets/images/sieve.xlsx'%}" download><b>here</b></a> and follow this <a href=""><b>guild</b></a>  Also if you want to learn more about particle size analysis, read more <b><a href="https://www.elementaryengineeringlibrary.com/civil-engineering/soil-mechanics/particle-size-distribution-curve">here.</a></b> </p>
+            
+            <div class="items-wrapper">
+                <div class="text-center">
+                    <h1 class="mb-5 bold" style="font-size: 50px; font-weight: bold;">Upload data file<br> to analysis</h1>
+                    <button class="btn btn-cta btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2">Upload</button>
+                </div>
+            </div><!--//items-wrapper-->
+            <div class="analysis mt-4 ">
+                <div class="graph mb-5">
+                    <canvas id="myChart" width="400" height="400"></canvas>
+                </div>
+                <div class="analysis_">
+                    <h3 style="font-size: 20px; font-weight: bold;">Analysis</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="tblToExcl">
+                            <thead>
+                              <tr>
+                                <th scope="col">D10</th>
+                                <th scope="col">D30</th>
+                                <th scope="col">D60</th>
+                                <th scope="col">CC</th>
+                                <th scope="col">CU</th>
+                                
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr id="analysis__DD_CC">
+
+                              </tr>
+                            </tbody>
+                            <thead class="mt-5">
+                              <tr>
+                                <th scope="col">%Silt & Clay</th>
+                                <th scope="col">%Sand</th>
+                                <th scope="col">%Gravel</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr id="analysis_soil">
+
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- <div class="Interpretation">
+                    <h3 style="font-size: 20px; font-weight: bold;">Analysis</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th scope="col">%Silt & Clay</th>
+                                <th scope="col">%Sand</th>
+                                <th scope="col">%Gravel</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr id="analysis_soil">
+
+                              </tr>
+                            </tbody>
+
+                        </table>
+                    </div> -->
+                </div>
+                <div class="download_result  mb-5" style="display: none;">
+                    <a class="btn  btn-primary mt-3" id="download_dataset" download>Download Dataset</a></button>
+                    <button class="btn  btn-dark mt-3" id="csv">Download Analysis (CSV)</button>    
+                    <button class="btn  btn-info mt-3" id="pdf">Download Analysis (pdf)</button>               
+                </div>
+            </div>
+            
+        </div><!--//container-->
+    </div><!--//about-section-->
+
+    <div id="contact" class="contact-section">
+        <div class="container text-center">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-content">
+                <p>Send mail us if you find this project interesting or would like to report a bug. If you'll also like to contribute to the project send us a mail as well or visit our github repository. </p>
+                
+            </div>
+            <button class="btn btn-cta btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Get in Touch</button>
+            
+        </div><!--//container-->
+    </div><!--//contact-section-->
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title fs-5" id="exampleModalLabel">Contact Form</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form >
+              <div class="modal-body">
+                  <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                      <input type="email" class="form-control" id="exampleFormControlInput1">
+                  </div>
+                  <div class="mb-3">
+                      <label for="exampleFormControlInput2" class="form-label">Subject</label>
+                      <input type="text" class="form-control" id="exampleFormControlInput2" >
+                  </div>
+                  <div class="mb-3">
+                      <label for="exampleFormControlTextarea1" class="form-label">Message</label>
+                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Send</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title fs-5" id="exampleModalLabel">Upload data set</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="uploadform">
+              <div class="modal-body">
+                  <div class="alert alert-primary" id="alert" style="display: none;" role="alert">
+                      Analysis complete. Please close this form to see result.
+                    </div>
+                    <div class="error-alert">
+                    </div>
+                  <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">File</label>
+                      <input type="file" class="form-control" name="file" id="file" accept=".csv, .xlsx">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Sample Weight</label>
+                    <input type="number" class="form-control" name="init_wt" id="init_wt" placeholder="300">
+                  </div>
+                  <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">Output File Name</label>
+                      <input type="text" class="form-control" name="owner" id="owner" placeholder="Project_1">
+                      
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Upload</button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    {%block script%} 
+      <!-- Javascript -->  
+      <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>        
+      <script src="{%static 'assets/plugins/bootstrap/js/bootstrap.min.js'%}"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+      <!-- <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script>  -->
+      <script src="{%static 'assets/js/jquery.js'%}"></script> 
+      <script src="{%static 'assets/js/custom.js'%}"></script>  
+    {%endblock%}
+
+{%endblock%}
